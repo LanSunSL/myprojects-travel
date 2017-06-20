@@ -9,6 +9,7 @@
 	<name>travel</name>
 	<url>http://maven.apache.org</url>
 	<properties>
+		<travel.version>0.0.1</travel.version>
 		<!-- junit依赖包的版本配置 -->
 		<junit.version>4.12</junit.version>
 		<!--web项目的依赖包版本 -->
@@ -42,6 +43,22 @@
 	</properties>
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>cn.mldn</groupId>
+				<artifactId>travel-util</artifactId>
+				<version>${travel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.mldn</groupId>
+				<artifactId>travel-api</artifactId>
+				<version>${travel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.mldn</groupId>
+				<artifactId>travel-service</artifactId>
+				<version>${travel.version}</version>
+			</dependency>
+
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
