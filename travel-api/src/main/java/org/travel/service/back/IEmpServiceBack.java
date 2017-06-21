@@ -3,10 +3,15 @@ package org.travel.service.back;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+
 public interface IEmpServiceBack {
 	/**
 	 * 根据雇员id获得雇员完整信息
 	 * @param eid 雇员编号
+	 * @param password 雇员密码
 	 * @return 包括如下内容：<br>
 	 * 1、key = emp、value = 雇员对象，如果该雇员不存在返回null<br>
 	 * 2、如果雇员信息可以查询成功，则查询对应级别信息。key = level
@@ -22,4 +27,16 @@ public interface IEmpServiceBack {
 	 * 2、key = allActions、value = 所有的权限标记信息；<br>
 	 */
 	public Map<String,Set<String>> listRoleAndAction(String eid) ;
+	
+	/**
+	 * 根据雇员id获得雇员完整信息
+	 * @param eid 雇员编号
+	 * @return 包括如下内容：<br>
+	 * 1、key = emp、value = 雇员对象，如果该雇员不存在返回null<br>
+	 * 2、key = dept, value = 部门的详细信息<br>
+	 * 3、key = level, value = 雇员级别信息<br> 
+	 */
+	@RequiresRoles(value={"emp","empshow"}, logical=Logical.OR)
+	@RequiresPermissions(value={"emp:get","empshow:get"}, logical=Logical.OR)
+	public Map<String,Object> getDetails(String eid) ;
 }

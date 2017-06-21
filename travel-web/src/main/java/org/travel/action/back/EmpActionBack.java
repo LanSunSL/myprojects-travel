@@ -1,5 +1,8 @@
 package org.travel.action.back;
 
+import java.util.Map;
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.travel.service.back.IEmpServiceBack;
 import org.travel.util.action.abs.AbstractBaseAction;
 import org.travel.vo.Emp;
 
@@ -19,6 +23,9 @@ import org.travel.vo.Emp;
 public class EmpActionBack extends AbstractBaseAction {
 	private static final String FLAG = "雇员";
 
+	@Resource
+	private IEmpServiceBack empServiceBack ;
+	
 	@RequestMapping("add_pre")
 	@RequiresUser
 	@RequiresRoles("emp")
@@ -66,6 +73,9 @@ public class EmpActionBack extends AbstractBaseAction {
 	@RequiresRoles({ "emp", "empshow" })
 	@RequiresPermissions({ "emp:get", "empshow:get" })
 	public ModelAndView get(String eid, HttpServletResponse response) {
+		Map<String,Object> map = this.empServiceBack.getDetails(eid);
+		JSONObject obj = new JSONObject();
+		
 		super.print(response, null);
 		return null;
 	}

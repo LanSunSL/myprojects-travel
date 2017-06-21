@@ -6,4 +6,7 @@
 		SELECT eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked
 		FROM emp WHERE eid=#{eid}	
 	</select>
+	<select id="findAllManagers" resultType="Emp">
+		SELECT eid,did,ename FROM emp WHERE eid IN (select eid FROM dept);
+	</select>
 </mapper>
