@@ -53,4 +53,13 @@ public class DeptActionBack extends AbstractBaseAction {
 		super.print(response, this.deptServiceBack.edit(vo));
 		return null;
 	}
+	
+	@RequestMapping("editMgr")
+	@RequiresUser
+	@RequiresRoles("emp")
+	@RequiresPermissions(value={"dept:edit","emp:edit"})
+	public ModelAndView editMgr(HttpServletResponse response, Long did) {
+		super.print(response, this.deptServiceBack.editMgr(did, super.getEid()));
+		return null;
+	}
 }

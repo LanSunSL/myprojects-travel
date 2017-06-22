@@ -7,4 +7,6 @@ import org.travel.vo.Emp;
 
 public interface IEmpDAO extends IBaseDAO<String, Emp> {
 	public List<Emp> findAllManagers();
+	
+	public boolean doUpdateLevel(Emp vo);
 }

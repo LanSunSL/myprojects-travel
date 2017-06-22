@@ -11,4 +11,7 @@
 	<select id="findById" parameterType="long" resultType="Dept">
 		SELECT did,dname,eid FROM dept WHERE did=#{did};
 	</select>
+	<update id="doUpdateManager" parameterType="Dept">
+		UPDATE dept SET eid=#{eid} WHERE did=#{did};
+	</update>
 </mapper>

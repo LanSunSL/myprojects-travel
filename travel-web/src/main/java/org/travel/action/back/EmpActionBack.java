@@ -18,6 +18,8 @@ import org.travel.service.back.IEmpServiceBack;
 import org.travel.util.action.abs.AbstractBaseAction;
 import org.travel.vo.Emp;
 
+import net.sf.json.JSONObject;
+
 @Controller
 @RequestMapping("/pages/back/admin/emp/*")
 public class EmpActionBack extends AbstractBaseAction {
@@ -70,13 +72,15 @@ public class EmpActionBack extends AbstractBaseAction {
 
 	@RequestMapping("get")
 	@RequiresUser
-	@RequiresRoles({ "emp", "empshow" })
-	@RequiresPermissions({ "emp:get", "empshow:get" })
+	@RequiresRoles(value = { "emp", "empshow" }, logical = Logical.OR)
+	@RequiresPermissions( value = {"emp:get", "empshow:get" }, logical = Logical.OR)
 	public ModelAndView get(String eid, HttpServletResponse response) {
 		Map<String,Object> map = this.empServiceBack.getDetails(eid);
 		JSONObject obj = new JSONObject();
-		
-		super.print(response, null);
+		obj.put("emp", map.get("emp"));
+		obj.put("dept", map.get("dept"));
+		obj.put("level", map.get("level"));
+		super.print(response, obj);
 		return null;
 	}
 

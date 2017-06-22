@@ -9,4 +9,7 @@
 	<select id="findAllManagers" resultType="Emp">
 		SELECT eid,did,ename FROM emp WHERE eid IN (select eid FROM dept);
 	</select>
+	<update id="doUpdateLevel" parameterType="Emp">
+		UPDATE emp SET lid=#{lid}, ineid=#{ineid} WHERE eid=#{eid};
+	</update>
 </mapper>

@@ -1,4 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="modal fade" id="userInfo"  tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true" data-keyboard="true">
 	<div class="modal-dialog" style="width: 1000px">
 		<div class="modal-content">
@@ -12,33 +14,41 @@
 				<div id="costBasicInfo">
 					<div class="row">
 						<div class="col-xs-3">
-							<img src="upload/member/nophoto.png" style="width:200px;">
+							<div><img id="info-photo" src="upload/member/nophoto.png" style="width:200px;"></div>
+							<shiro:hasPermission name="dept:edit">
+							<c:if test="${level==2}">
+							<div class="height:50px;">&nbsp;</div>
+							<div><button id="updateMgrBtn" class="btn btn-danger btn-lg">
+								<span class="glyphicon glyphicon-pencil"></span>&nbsp;部门领导降级
+							</button></div>
+							</c:if>
+							</shiro:hasPermission>
 						</div>
 						<div class="col-xs-8">
 							<table class="table table-condensed" style="width:700px;">
 								<tr>
 									<td style="width:30%;"><strong>雇员姓名：</strong></td>
-									<td><span>老李</span></td>
+									<td id="info-ename"></td>
 								</tr>
 								<tr>
 									<td><strong>雇员职务：</strong></td>
-									<td>部门经理</td>
+									<td id="info-level"></td>
 								</tr>
 								<tr>
 									<td><strong>所属部门：</strong></td>
-									<td>技术部</td>
+									<td id="info-dept"></td>
 								</tr>
 								<tr>
 									<td><strong>联系电话：</strong></td>
-									<td>123432890</td>
+									<td id="info-phone"></td>
 								</tr>
 								<tr>
 									<td><strong>雇佣日期：</strong></td>
-									<td>2019-10-10</td>
+									<td id="info-hiredate"></td>
 								</tr>
 								<tr>
 									<td><strong>备注信息：</strong></td>
-									<td><pre class="pre-scrollable" style="width:400px;height:210px;">发神经阿德里飞洒抵抗力 范德克鲁斯建立开放撒 方力申搭建了开发商的 发动机萨拉空间来看 234uop富士达会计分录款手机范德萨进来进来看范德萨克利夫兰斯顿卡机了开发商大量了快捷方式的拉开建立开放撒酒 刘嘉玲发撒旦机立刻地方撒刻录机弗拉基反抗螺丝钉</pre></td>
+									<td><pre class="pre-scrollable" style="width:400px;height:210px;" id="info-note"></pre></td>
 								</tr>
 							</table>
 						</div>

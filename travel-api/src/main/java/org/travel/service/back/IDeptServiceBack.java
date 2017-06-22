@@ -15,4 +15,8 @@ public interface IDeptServiceBack {
 	@RequiresRoles(value = { "emp" })
 	@RequiresPermissions(value = { "dept:edit" })
 	public boolean edit(Dept vo);
+	
+	@RequiresRoles(value = { "emp" })
+	@RequiresPermissions(value = { "dept:edit" , "emp:edit"})
+	public boolean editMgr(Long did, String ineid);
 }

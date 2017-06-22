@@ -15,9 +15,30 @@ $(function(){
 	}) ;
 	$("span[id^=eid-]").each(function(){
 		$(this).on("click",function(){
-			eid = this.id.split("-")[1] ;
-			console.log("雇员编号：" + eid) ;
+			eid = this.id.substring(4) ;
+			did = $(this).attr("alt");
+//			console.log("雇员编号：" + eid) ;
+			$.post("pages/back/admin/emp/get.action", {"eid":eid}, function(data){
+				$("#info-photo").attr("src","upload/member/" + data.emp.photo);
+				$("#info-ename").text(data.emp.ename);
+				$("#info-level").text(data.level.title);
+				$("#info-dept").text(data.dept.dname);
+				$("#info-phone").text(data.emp.phone);
+				$("#info-hiredate").text(new Date(data.emp.hiredate.time).format("yyyy-MM-dd"));
+				$("#info-note").text(data.emp.note);
+				$("#updateMgrBtn").attr("alt",did);
+			},"json");
 			$("#userInfo").modal("toggle") ;
 		}) ;
 	}) ;
+	
+	$(updateMgrBtn).on("click", function() {
+		did = $(this).attr("alt");
+//		console.log(did);
+		$.post("pages/back/admin/dept/editMgr.action", {"did":did}, function(data){
+			$("#mgr-" + did).empty();
+			operateAlert(data.trim() == "true", "部门领导更新成功！", "部门领导更新失败！");
+			$("#userInfo").modal("toggle");
+		},"text");
+	});
 }) ;
