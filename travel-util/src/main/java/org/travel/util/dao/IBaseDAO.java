@@ -1,6 +1,7 @@
 package org.travel.util.dao;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 该接口可以明确的描述出基础的DAO操作方法定义
@@ -50,27 +51,23 @@ public interface IBaseDAO<K, V> {
 	 * @param lineSize 每行显示的数据长度，这个长度也就决定了ArrayList初始化的长度
 	 * @return 由于返回多行的查询记录，所以每行记录都要求封装在VO类对象之中，如果没有返回任何查询结果，该集合长度为0(size()==0)，而不是null
 	 */
-	public List<V> findAllSplit(Integer currentPage,Integer lineSize) ;
+	public List<V> findAllSplitNoKeyWord(Integer currentPage,Integer lineSize) ;
 	/**
 	 * 数据模糊的分页查询操作
-	 * @param currentPage 当前所在页，此页数一定要大于0
-	 * @param lineSize 每行显示的数据长度，这个长度也就决定了ArrayList初始化的长度
-	 * @param column 模糊查询的设置列
-	 * @param keyWord 模糊查询关键字
+	 * @param param 包含有start, lineSize,column 模糊查询的设置列， keyWord 模糊查询关键字
 	 * @return 由于返回多行的查询记录，所以每行记录都要求封装在VO类对象之中，如果没有返回任何查询结果，该集合长度为0(size()==0)，而不是null
 	 */
-	public List<V> findAllSplit(Integer currentPage,Integer lineSize,String column,String keyWord) ;
+	public List<V> findAllSplit(Map<String,Object> param) ;
 	/**
 	 * 是进行全部数据统计个数的查询，使用COUNT()函数
 	 * @return 表中的全部记录数，如果表中没有记录，返回的就是0
 	 */
-	public Long getAllCount() ;
+	public Long getAllCountNoKeyWord() ;
 	/**
 	 * 统计模糊查询的数据量，使用COUNT()函数
-	 * @param column 模糊查询的设置列
-	 * @param keyWord 模糊查询关键字
+	 * @param param 包含有column 模糊查询的设置列， keyWord 模糊查询关键字
 	 * @return 表中的全部记录数，如果表中没有记录，返回的就是0
 	 */
-	public Long getAllCount(String column,String keyWord) ;
+	public Long getAllCount(Map<String,Object> param) ;
 }
  

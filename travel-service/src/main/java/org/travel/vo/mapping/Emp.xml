@@ -16,4 +16,21 @@
 		INSERT INTO emp (eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked) 
 		VALUES (#{eid},#{lid},#{did},#{ename},#{sal},#{phone},#{password},#{photo},#{note},#{hiredate},#{ineid},#{locked});
 	</insert>
+	<select id="findAllSplit" parameterType="map" resultType="Emp">
+		SELECT eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked FROM emp 
+		<where>
+			<if test="column != null and keyWord != null">
+				${column} LIKE #{keyWord}
+			</if>
+		</where>
+		LIMIT #{start}, #{lineSize}
+	</select>
+	<select id="getAllCount" parameterType="map" resultType="Long">
+		SELECT COUNT(*) FROM emp 
+		<where>
+			<if test="column != null and keyWord != null">
+				${column} LIKE #{keyWord}
+			</if>
+		</where>
+	</select>
 </mapper>

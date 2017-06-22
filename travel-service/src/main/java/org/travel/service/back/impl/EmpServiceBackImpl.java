@@ -15,11 +15,12 @@ import org.travel.dao.ILevelDAO;
 import org.travel.dao.IRoleDAO;
 import org.travel.exception.ManagerExistedException;
 import org.travel.service.back.IEmpServiceBack;
+import org.travel.service.back.abs.AbstractService;
 import org.travel.vo.Dept;
 import org.travel.vo.Emp;
 
 @Service
-public class EmpServiceBackImpl implements IEmpServiceBack {
+public class EmpServiceBackImpl extends AbstractService implements IEmpServiceBack {
 	@Resource
 	private IEmpDAO empDAO;
 	@Resource
@@ -106,6 +107,17 @@ public class EmpServiceBackImpl implements IEmpServiceBack {
 	@Override
 	public Emp getEid(String eid) {
 		return this.empDAO.findById(eid);
+	}
+
+	@Override
+	public Map<String, Object> list(long currentPage, int lineSize, String column, String keyWord) {
+		Map<String, Object> map = new HashMap<String, Object> ();
+		Map<String, Object> param = super.handleParam(currentPage, lineSize, column, keyWord);
+		map.put("allEmps", this.empDAO.findAllSplit(param));
+		map.put("allRecorders", this.empDAO.getAllCount(param));
+		map.put("allDepts", this.deptDAO.findAll());
+		map.put("allLevels", this.levelDAO.findAll());
+		return map;
 	}
 
 }

@@ -53,4 +53,8 @@ public interface IEmpServiceBack {
 	@RequiresRoles(value={"emp"})
 	@RequiresPermissions(value={"emp:add"})
 	public Emp getEid(String eid) ;
+	
+	@RequiresRoles(value={"emp","empshow"}, logical=Logical.OR)
+	@RequiresPermissions(value={"emp:list","empshow:list"}, logical=Logical.OR)
+	public Map<String,Object> list(long currentPage, int lineSize, String column, String keyWord) ;
 }

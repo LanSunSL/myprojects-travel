@@ -1,5 +1,8 @@
 package org.travel.action.back;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -18,8 +21,11 @@ import org.travel.exception.ManagerExistedException;
 import org.travel.service.back.IEmpServiceBack;
 import org.travel.util.action.abs.AbstractBaseAction;
 import org.travel.util.encrypt.PasswordUtil;
+import org.travel.util.split.ActionSplitPageUtil;
 import org.travel.util.web.FileUtils;
+import org.travel.vo.Dept;
 import org.travel.vo.Emp;
+import org.travel.vo.Level;
 
 import net.sf.json.JSONObject;
 
@@ -120,6 +126,28 @@ public class EmpActionBack extends AbstractBaseAction {
 	@RequiresPermissions(value = { "emp:list", "empshow:list" }, logical = Logical.OR)
 	public ModelAndView list(String ids, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(super.getUrl("emp.list.page"));
+		ActionSplitPageUtil aspu = new ActionSplitPageUtil(request,"雇员编号:eid|雇员姓名:ename|联系电话:phone", super.getMsg("emp.list.action"));
+		Map<String, Object> map = this.empServiceBack.list(aspu.getCurrentPage(), aspu.getLineSize(), aspu.getColumn(), aspu.getKeyWord());
+		mav.addAllObjects(map);
+		
+		List<Dept> allDepts = (List<Dept>) map.get("allDepts");
+		Map<Long, String> deptMap = new HashMap<Long, String>();
+		Iterator<Dept> deptIter = allDepts.iterator();
+		while (deptIter.hasNext()) {
+			Dept dept = deptIter.next();
+			deptMap.put(dept.getDid(), dept.getDname());
+		}
+		mav.addObject("allDepts", deptMap);
+		
+		List<Level> allLevels = (List<Level>) map.get("allLevels");
+		Map<String, String> levelMap = new HashMap<String, String>();
+		Iterator<Level> levelIter = allLevels.iterator();
+		while (levelIter.hasNext()) {
+			Level level = levelIter.next();
+			levelMap.put(level.getLid(), level.getTitle());
+		}
+		mav.addObject("allLevels", levelMap);
+		
 		return mav;
 	}
 

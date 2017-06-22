@@ -55,7 +55,7 @@
 			}
 		%>
 <%
-	if (pageSize > seed * 2) {	// 数据量很大，需要进行省略号的出现
+	if (pageSize > (seed - 1) * 2) {	// 数据量很大，需要进行省略号的出现
 		if (currentPage <= seed * 2) {
 			long startPage = 2 ;	// 从第2页开始显示
 			long endPage = currentPage + seed * 2  ;	
