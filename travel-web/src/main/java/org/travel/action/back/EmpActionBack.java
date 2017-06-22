@@ -14,8 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.travel.exception.ManagerExistedException;
 import org.travel.service.back.IEmpServiceBack;
 import org.travel.util.action.abs.AbstractBaseAction;
+import org.travel.util.encrypt.PasswordUtil;
+import org.travel.util.web.FileUtils;
 import org.travel.vo.Emp;
 
 import net.sf.json.JSONObject;
@@ -26,14 +29,15 @@ public class EmpActionBack extends AbstractBaseAction {
 	private static final String FLAG = "雇员";
 
 	@Resource
-	private IEmpServiceBack empServiceBack ;
-	
+	private IEmpServiceBack empServiceBack;
+
 	@RequestMapping("add_pre")
 	@RequiresUser
 	@RequiresRoles("emp")
 	@RequiresPermissions("emp:add")
 	public ModelAndView addPre() {
 		ModelAndView mav = new ModelAndView(super.getUrl("emp.add.page"));
+		mav.addAllObjects(this.empServiceBack.getAddPre());
 		return mav;
 	}
 
@@ -43,9 +47,26 @@ public class EmpActionBack extends AbstractBaseAction {
 	@RequiresPermissions("emp:add")
 	public ModelAndView add(Emp vo, MultipartFile pic, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(super.getUrl("back.forward.page"));
-		// super.setUrlAndMsg(request, "emp.add.action", "vo.add.failure",
-		// FLAG);
-		super.setUrlAndMsg(request, "emp.add.action", "vo.add.success", FLAG);
+		vo.setIneid(super.getEid());
+		vo.setPassword(PasswordUtil.getPassword(vo.getPassword()));
+		FileUtils fileUtil = null;
+		if (!pic.isEmpty()) {
+			fileUtil = new FileUtils(pic);
+			vo.setPhoto(fileUtil.createFileName());
+		}
+		try {
+			if (this.empServiceBack.add(vo)) {
+				if (fileUtil != null) {
+					fileUtil.saveFile(request, "upload/member", vo.getPhoto());
+				}
+				super.setUrlAndMsg(request, "emp.add.action", "vo.add.success", FLAG);
+			} else {
+				super.setUrlAndMsg(request, "emp.add.action", "vo.add.failure", FLAG);
+			}
+		} catch (ManagerExistedException e) {
+			super.setUrlAndMsg(request, "emp.add.action", "mgr.exist.msg");
+		}
+
 		return mav;
 	}
 
@@ -73,9 +94,9 @@ public class EmpActionBack extends AbstractBaseAction {
 	@RequestMapping("get")
 	@RequiresUser
 	@RequiresRoles(value = { "emp", "empshow" }, logical = Logical.OR)
-	@RequiresPermissions( value = {"emp:get", "empshow:get" }, logical = Logical.OR)
+	@RequiresPermissions(value = { "emp:get", "empshow:get" }, logical = Logical.OR)
 	public ModelAndView get(String eid, HttpServletResponse response) {
-		Map<String,Object> map = this.empServiceBack.getDetails(eid);
+		Map<String, Object> map = this.empServiceBack.getDetails(eid);
 		JSONObject obj = new JSONObject();
 		obj.put("emp", map.get("emp"));
 		obj.put("dept", map.get("dept"));

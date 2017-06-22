@@ -58,6 +58,17 @@
 								<!-- 定义表单错误提示显示元素 -->
 								<div class="col-md-4" id="enameMsg">${errors['ename']}</div>
 							</div>
+							<div class="form-group" id="salDiv">
+								<!-- 定义表单提示文字 -->
+								<label class="col-md-3 control-label" for="sal">基本工资：</label>
+								<div class="col-md-5">
+									<!-- 定义表单输入组件 -->
+									<input type="text" id="sal" name="sal" class="form-control"
+										placeholder="请输入雇员月薪">
+								</div>
+								<!-- 定义表单错误提示显示元素 -->
+								<div class="col-md-4" id="salMsg">${errors['sal']}</div>
+							</div>
 							<div class="form-group" id="phoneDiv">
 								<!-- 定义表单提示文字 -->
 								<label class="col-md-3 control-label" for="phone">联系电话：</label>
@@ -71,31 +82,33 @@
 							</div>
 							<div class="form-group" id="didDiv">
 								<!-- 定义表单提示文字 -->
-								<label class="col-md-3 control-label" for="jid">所属部门：</label>
+								<label class="col-md-3 control-label" for="did">所属部门：</label>
 								<div class="col-md-5">
 									<select id="did" name="did" class="form-control">
 										<option value="">====== 请选择所在部门 ======</option>
-										<option value="1">技术部</option>
-										<option value="2">财务部</option>
-										<option value="3">市场部</option>
+										<c:forEach items="${allDepts}" var="dept">
+										<option value="${dept.did}">${dept.dname}</option>
+										</c:forEach>
 									</select>
 								</div>
 								<!-- 定义表单错误提示显示元素 -->
 								<div class="col-md-4" id="didMsg">${errors['did']}</div>
 							</div>
-							<div class="form-group" id="jidDiv">
+							<div class="form-group" id="lidDiv">
 								<!-- 定义表单提示文字 -->
-								<label class="col-md-3 control-label" for="jid">出差类型：</label>
+								<label class="col-md-3 control-label" for="lid">雇员职务：</label>
 								<div class="col-md-5">
-									<select id="jid" name="jid" class="form-control">
+									<select id="lid" name="lid" class="form-control">
 										<option value="">====== 请选择雇员职务 ======</option>
-										<option value="1">总监</option>
-										<option value="2">部门经理</option>
-										<option value="3">部门员工</option>
+										<c:forEach items="${allLevels}" var="lev">
+										<c:if test="${lev.level ge level}">
+										<option value="${lev.lid}">${lev.title}</option>
+										</c:if>
+										</c:forEach>
 									</select>
 								</div>
 								<!-- 定义表单错误提示显示元素 -->
-								<div class="col-md-4" id="jidMsg">${errors['jid']}</div>
+								<div class="col-md-4" id="lidMsg">${errors['lid']}</div>
 							</div>
 							<div class="form-group" id="picDiv">
 								<!-- 定义表单提示文字 -->

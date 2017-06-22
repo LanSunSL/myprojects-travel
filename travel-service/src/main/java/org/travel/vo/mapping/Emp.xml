@@ -12,4 +12,8 @@
 	<update id="doUpdateLevel" parameterType="Emp">
 		UPDATE emp SET lid=#{lid}, ineid=#{ineid} WHERE eid=#{eid};
 	</update>
+	<insert id="doCreate" parameterType="Emp">
+		INSERT INTO emp (eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked) 
+		VALUES (#{eid},#{lid},#{did},#{ename},#{sal},#{phone},#{password},#{photo},#{note},#{hiredate},#{ineid},#{locked});
+	</insert>
 </mapper>

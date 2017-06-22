@@ -50,10 +50,14 @@ $(function(){
 			"ename" : {
 				required : true
 			} ,
+			"sal" : {
+				required : true,
+				number : true
+			} ,
 			"phone" : {
 				required : true 
 			},
-			"jid" : {
+			"lid" : {
 				required : true 
 			},
 			"did" : {

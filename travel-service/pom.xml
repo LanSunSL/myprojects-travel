@@ -19,10 +19,7 @@
 			<groupId>cn.mldn</groupId>
 			<artifactId>travel-api</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>cn.mldn</groupId>
-			<artifactId>travel-util</artifactId>
-		</dependency>
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
