@@ -49,4 +49,8 @@ public interface IEmpServiceBack {
 	@RequiresRoles(value={"emp"})
 	@RequiresPermissions(value={"emp:add"})
 	public boolean add(Emp vo) throws ManagerExistedException;
+	
+	@RequiresRoles(value={"emp"})
+	@RequiresPermissions(value={"emp:add"})
+	public Emp getEid(String eid) ;
 }
