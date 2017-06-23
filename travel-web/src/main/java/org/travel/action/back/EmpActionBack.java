@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.travel.exception.LevelNotEnoughException;
 import org.travel.exception.ManagerExistedException;
 import org.travel.service.back.IEmpServiceBack;
 import org.travel.util.action.abs.AbstractBaseAction;
@@ -91,6 +92,7 @@ public class EmpActionBack extends AbstractBaseAction {
 	@RequiresPermissions("emp:edit")
 	public ModelAndView editPre(String eid) {
 		ModelAndView mav = new ModelAndView(super.getUrl("emp.edit.page"));
+		mav.addAllObjects(this.empServiceBack.getEditPre(eid));
 		return mav;
 	}
 
@@ -99,10 +101,36 @@ public class EmpActionBack extends AbstractBaseAction {
 	@RequiresRoles("emp")
 	@RequiresPermissions("emp:edit")
 	public ModelAndView edit(Emp vo, MultipartFile pic, HttpServletRequest request) {
+		
 		ModelAndView mav = new ModelAndView(super.getUrl("back.forward.page"));
-		// super.setUrlAndMsg(request, "emp.list.action", "vo.edit.failure",
-		// FLAG);
-		super.setUrlAndMsg(request, "emp.list.action", "vo.edit.success", FLAG);
+		vo.setIneid(super.getEid());
+		if (vo.getPassword() == null || "".equals(vo.getPassword())) {
+			vo.setPassword(null);
+		} else {
+			vo.setPassword(PasswordUtil.getPassword(vo.getPassword()));
+		}
+		FileUtils fileUtil = null;
+		if (!pic.isEmpty()) {
+			fileUtil = new FileUtils(pic);
+			if ("nophoto.png".equals(vo.getPhoto())) {  //之前没有图片，使用的是默认nophoto.png
+				vo.setPhoto(fileUtil.createFileName());
+			}
+		}
+		
+		try {
+			if (this.empServiceBack.edit(vo)) {
+				if (fileUtil != null) {
+					fileUtil.saveFile(request, "upload/member", vo.getPhoto());
+				}
+				super.setUrlAndMsg(request, "emp.list.action", "vo.edit.success", FLAG);
+			} else {
+				super.setUrlAndMsg(request, "emp.list.action", "vo.edit.failure", FLAG);
+			}
+		} catch (ManagerExistedException e) {
+			super.setUrlAndMsg(request, "emp.list.action", "mgr.exist.msg");
+		} catch (LevelNotEnoughException e) {
+			super.setUrlAndMsg(request, "emp.list.action", "level.not.enough.msg");
+		}
 		return mav;
 	}
 

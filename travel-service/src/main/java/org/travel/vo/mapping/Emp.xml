@@ -33,4 +33,9 @@
 			</if>
 		</where>
 	</select>
+	<update id="doUpdate" parameterType="Emp">
+		UPDATE emp SET ename=#{ename},lid=#{lid},did=#{did},sal=#{sal},phone=#{phone},note=#{note},ineid=#{ineid}
+		<if test="password != null">,password=#{password}</if>
+		<where>eid=#{eid}</where> 
+	</update>
 </mapper>

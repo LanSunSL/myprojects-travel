@@ -13,6 +13,7 @@ import org.travel.dao.IDeptDAO;
 import org.travel.dao.IEmpDAO;
 import org.travel.dao.ILevelDAO;
 import org.travel.dao.IRoleDAO;
+import org.travel.exception.LevelNotEnoughException;
 import org.travel.exception.ManagerExistedException;
 import org.travel.service.back.IEmpServiceBack;
 import org.travel.service.back.abs.AbstractService;
@@ -118,6 +119,51 @@ public class EmpServiceBackImpl extends AbstractService implements IEmpServiceBa
 		map.put("allDepts", this.deptDAO.findAll());
 		map.put("allLevels", this.levelDAO.findAll());
 		return map;
+	}
+
+	@Override
+	public Map<String, Object> getEditPre(String eid) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("allLevels", this.levelDAO.findAll());
+		map.put("allDepts", this.deptDAO.findAll());
+		map.put("emp", this.empDAO.findById(eid));
+		return map;
+	}
+
+	@Override
+	public boolean edit(Emp vo) throws ManagerExistedException, LevelNotEnoughException {
+		Emp hr = this.empDAO.findById(vo.getIneid());  //当前修改者信息
+		Emp oldEmp = this.empDAO.findById(vo.getEid()); //要修改员工的原始信息
+		Dept oldDept = this.deptDAO.findById(oldEmp.getDid());
+		Dept newDept = this.deptDAO.findById(vo.getDid());
+
+		if ("manager".equals(oldEmp.getLid()) || "manager".equals(vo.getLid())) {  //要修改经理的信息，必须是人事manager
+			if ("staff".equals(hr.getLid())){
+				throw new LevelNotEnoughException("您不具备当前操作权限！");
+			}
+			if ("manager".equals(hr.getLid())) {
+				if (oldEmp.getLid().equals(vo.getLid())) {  //修改前后都是经理
+					if (!oldEmp.getDid().equals(vo.getDid())) { //改变了部门
+						if (newDept.getEid() != null) {  //新部门已有经理
+							throw new ManagerExistedException("该部门已经存在经理，无法进行新经理的任命！");
+						} else {
+							oldDept.setEid(null);
+							this.deptDAO.doUpdateManager(oldDept); //原部门领导降级
+							newDept.setEid(vo.getEid()); 
+							this.deptDAO.doUpdateManager(newDept);  //新部门增加经理
+						}
+					}
+				} else if ("manager".equals(oldEmp.getLid())) {
+					oldDept.setEid(null);
+					this.deptDAO.doUpdateManager(oldDept); //原部门领导降级
+				} else {
+					newDept.setEid(vo.getEid()); 
+					this.deptDAO.doUpdateManager(newDept);  //新部门增加经理
+				}
+			}
+		}
+		return this.empDAO.doUpdate(vo);
+		
 	}
 
 }

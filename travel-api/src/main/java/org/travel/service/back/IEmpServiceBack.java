@@ -6,6 +6,7 @@ import java.util.Set;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.travel.exception.LevelNotEnoughException;
 import org.travel.exception.ManagerExistedException;
 import org.travel.vo.Emp;
 
@@ -57,4 +58,12 @@ public interface IEmpServiceBack {
 	@RequiresRoles(value={"emp","empshow"}, logical=Logical.OR)
 	@RequiresPermissions(value={"emp:list","empshow:list"}, logical=Logical.OR)
 	public Map<String,Object> list(long currentPage, int lineSize, String column, String keyWord) ;
+	
+	@RequiresRoles(value={"emp"})
+	@RequiresPermissions(value={"emp:edit"})
+	public Map<String,Object> getEditPre(String eid) ;
+	
+	@RequiresRoles(value={"emp"})
+	@RequiresPermissions(value={"emp:edit"})
+	public boolean edit(Emp vo) throws ManagerExistedException, LevelNotEnoughException;
 }
