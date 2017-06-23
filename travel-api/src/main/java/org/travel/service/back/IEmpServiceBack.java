@@ -66,4 +66,8 @@ public interface IEmpServiceBack {
 	@RequiresRoles(value={"emp"})
 	@RequiresPermissions(value={"emp:edit"})
 	public boolean edit(Emp vo) throws ManagerExistedException, LevelNotEnoughException;
+	
+	@RequiresRoles(value={"emp"})
+	@RequiresPermissions(value={"emp:delete"})
+	public boolean delete(Set<String> eids, String ineid) ;
 }

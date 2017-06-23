@@ -9,4 +9,8 @@ public interface IEmpDAO extends IBaseDAO<String, Emp> {
 	public List<Emp> findAllManagers();
 	
 	public boolean doUpdateLevel(Emp vo);
+	
+	public List<Emp> findAllByIds(Object[] ids);
+	
+	public boolean doUpdateLocked(Emp vo);
 }

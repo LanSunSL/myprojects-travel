@@ -4,10 +4,10 @@
 <mapper namespace="org.travel.dao.IEmpDAO">
 	<select id="findById" parameterType="string" resultType="Emp">
 		SELECT eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked
-		FROM emp WHERE eid=#{eid}	
+		FROM emp WHERE eid=#{eid} AND locked!=2	
 	</select>
 	<select id="findAllManagers" resultType="Emp">
-		SELECT eid,did,ename FROM emp WHERE eid IN (select eid FROM dept);
+		SELECT eid,did,ename FROM emp WHERE eid IN (select eid FROM dept) AND locked!=2;
 	</select>
 	<update id="doUpdateLevel" parameterType="Emp">
 		UPDATE emp SET lid=#{lid}, ineid=#{ineid} WHERE eid=#{eid};
@@ -19,8 +19,9 @@
 	<select id="findAllSplit" parameterType="map" resultType="Emp">
 		SELECT eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked FROM emp 
 		<where>
+			locked!=2
 			<if test="column != null and keyWord != null">
-				${column} LIKE #{keyWord}
+				AND ${column} LIKE #{keyWord}
 			</if>
 		</where>
 		LIMIT #{start}, #{lineSize}
@@ -28,8 +29,9 @@
 	<select id="getAllCount" parameterType="map" resultType="Long">
 		SELECT COUNT(*) FROM emp 
 		<where>
+			locked!=2
 			<if test="column != null and keyWord != null">
-				${column} LIKE #{keyWord}
+				AND ${column} LIKE #{keyWord}
 			</if>
 		</where>
 	</select>
@@ -37,5 +39,18 @@
 		UPDATE emp SET ename=#{ename},lid=#{lid},did=#{did},sal=#{sal},phone=#{phone},note=#{note},ineid=#{ineid}
 		<if test="password != null">,password=#{password}</if>
 		<where>eid=#{eid}</where> 
+	</update>
+	<select id="findAllByIds" resultType="Emp">
+		SELECT eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked FROM emp 
+		<where>
+			eid IN 
+			<foreach collection="array" open="(" close=")" separator="," item="myeid">
+			 #{myeid}
+			</foreach>
+			AND locked != 2;
+		</where>
+	</select>
+	<update id="doUpdateLocked" parameterType="Emp">
+		UPDATE emp SET locked=#{locked}, ineid=#{ineid} WHERE eid=#{eid};
 	</update>
 </mapper>

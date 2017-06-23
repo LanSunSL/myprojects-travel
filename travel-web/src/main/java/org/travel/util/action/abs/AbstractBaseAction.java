@@ -1,6 +1,8 @@
 package org.travel.util.action.abs;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,15 @@ public abstract class AbstractBaseAction {
 	
 	public String getEid() {
 		return SecurityUtils.getSubject().getPrincipal().toString();
+	}
+	
+	public Set<String> handleStringIDs(String ids) {
+		Set<String> idSet = new HashSet<String>();
+		String[] result = ids.split(",");
+		for (int i = 0 ; i < result.length; i ++) {
+			idSet.add(result[i]);
+		}
+		return idSet;
 	}
 	
 	public void setUrlAndMsg(HttpServletRequest request ,String urlKey,String msgKey,Object...arg) {

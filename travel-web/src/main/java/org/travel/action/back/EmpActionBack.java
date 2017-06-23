@@ -185,9 +185,11 @@ public class EmpActionBack extends AbstractBaseAction {
 	@RequiresPermissions("emp:delete")
 	public ModelAndView delete(String ids, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(super.getUrl("back.forward.page"));
-		// super.setUrlAndMsg(request, "emp.list.action", "vo.delete.failure",
-		// FLAG);
-		super.setUrlAndMsg(request, "emp.list.action", "vo.delete.success", FLAG);
+		if (this.empServiceBack.delete(super.handleStringIDs(ids), super.getEid())) {
+			super.setUrlAndMsg(request, "emp.list.action", "vo.delete.success", FLAG);
+		} else {
+			super.setUrlAndMsg(request, "emp.list.action", "vo.delete.failure", FLAG);
+		}
 		return mav;
 	}
 }

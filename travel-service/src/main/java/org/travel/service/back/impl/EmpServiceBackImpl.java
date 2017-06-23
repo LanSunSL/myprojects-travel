@@ -2,6 +2,8 @@ package org.travel.service.back.impl;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -164,6 +166,34 @@ public class EmpServiceBackImpl extends AbstractService implements IEmpServiceBa
 		}
 		return this.empDAO.doUpdate(vo);
 		
+	}
+
+	@Override
+	public boolean delete(Set<String> eids, String ineid) {
+		Emp hr = this.empDAO.findById(ineid);  //操作者
+		List<Emp> emps = this.empDAO.findAllByIds(eids.toArray());  //要删除的emp
+		Iterator<Emp> iter = emps.iterator();
+		while (iter.hasNext()) {
+			Emp vo = iter.next();
+			vo.setIneid(ineid);  //设置修改者
+			if ("chief".equals(vo.getLid())) {
+				continue;
+			}
+			if ("manager".equals(vo.getLid())) {  //要删除的是领导
+				if ("staff".equals(hr.getLid())) {
+					throw new LevelNotEnoughException("您不具备当前操作权限！");
+				}
+				vo.setLid("staff");
+				this.empDAO.doUpdateLevel(vo);  //领导降级
+				Dept dept = new Dept();
+				dept.setDid(vo.getDid());//领导所在部门
+				dept.setEid(null);
+				this.deptDAO.doUpdateManager(dept); //删除部门领导
+			}
+			vo.setLocked(2);
+			this.empDAO.doUpdateLocked(vo);
+		}
+		return true;
 	}
 
 }

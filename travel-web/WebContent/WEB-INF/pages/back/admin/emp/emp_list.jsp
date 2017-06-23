@@ -62,6 +62,7 @@
 					</c:forEach>
 					</tbody>
 				</table>
+				<button id="deleteBtn" class="btn btn-danger btn-lg">删除所选雇员信息</button>
 				<div id="splitBarDiv" style="float:right">
 					<jsp:include page="/WEB-INF/pages/plugins/split_plugin_page_bar.jsp"/>
 				</div>
