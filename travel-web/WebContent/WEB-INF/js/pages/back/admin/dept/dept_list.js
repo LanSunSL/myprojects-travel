@@ -32,13 +32,15 @@ $(function(){
 		}) ;
 	}) ;
 	
-	$(updateMgrBtn).on("click", function() {
-		did = $(this).attr("alt");
-//		console.log(did);
-		$.post("pages/back/admin/dept/editMgr.action", {"did":did}, function(data){
-			$("#mgr-" + did).empty();
-			operateAlert(data.trim() == "true", "部门领导更新成功！", "部门领导更新失败！");
-			$("#userInfo").modal("toggle");
-		},"text");
-	});
+	if (typeof(updateMgrBtn) != "undefined") {
+		$(updateMgrBtn).on("click", function() {
+			did = $(this).attr("alt");
+	//		console.log(did);
+			$.post("pages/back/admin/dept/editMgr.action", {"did":did}, function(data){
+				$("#mgr-" + did).empty();
+				operateAlert(data.trim() == "true", "部门领导更新成功！", "部门领导更新失败！");
+				$("#userInfo").modal("toggle");
+			},"text");
+		});
+	}
 }) ;

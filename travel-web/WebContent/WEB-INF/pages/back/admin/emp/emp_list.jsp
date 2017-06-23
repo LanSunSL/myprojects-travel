@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <jsp:include page="/WEB-INF/pages/plugins/back/back_header.jsp"/>
 <script type="text/javascript" src="js/pages/back/admin/emp/emp_list.js"></script>
 <%!
@@ -28,7 +29,9 @@
 				<table class="table table-condensed">
 					<thead>
 						<tr>
+							<shiro:hasPermission name="emp:edit">
 							<th class="text-center"><input type="checkbox" id="selall"></th>
+							</shiro:hasPermission>
 							<th class="text-center">照片</th> 
 							<th class="text-center">登录ID</th> 
 							<th class="text-center">姓名</th>
@@ -37,32 +40,42 @@
 							<th class="text-center">雇佣日期</th>
 							<th class="text-center">基本工资</th>
 							<th class="text-center">联系电话</th>
+							<shiro:hasPermission name="emp:edit">
 							<th class="text-center">操作</th>
+							</shiro:hasPermission>
 						</tr>
 					</thead>
 					<tbody>
 					<c:forEach items="${allEmps}" var="emp">
 						<tr>
+							<shiro:hasPermission name="emp:edit">
 							<td class="text-center"><input type="checkbox" id="eid-${emp.eid}" value="${emp.eid}"></td>
+							</shiro:hasPermission>
 							<td class="text-center">
 								<img src="upload/member/${emp.photo}" style="width:20px;"/> 
 							</td> 
 							<td class="text-center">${emp.eid}</td>
-							<td class="text-center">${emp.ename}</td>
+							<td class="text-center">
+								<span id="eid-${emp.eid}" style="cursor:pointer;" alt="${emp.did}">${emp.ename}</span>
+							</td>
 							<td class="text-center">${allLevels[emp.lid]}</td>
 							<td class="text-center">${allDepts[emp.did]}</td>
 							<td class="text-center"><fmt:formatDate value="${emp.hiredate}" pattern="yyyy-MM-dd"/></td>
 							<td class="text-center">${emp.sal}</td>
 							<td class="text-center">${emp.phone}</td>
+							<shiro:hasPermission name="emp:edit">
 							<td class="text-center">
 								<a type="button" class="btn btn-warning btn-xs" href="<%=EMP_EDIT_URL%>?eid=${emp.eid}">
 										<span class="glyphicon glyphicon-edit"></span>&nbsp;编辑</a>
 							</td>
+							</shiro:hasPermission>
 						</tr>
 					</c:forEach>
 					</tbody>
 				</table>
-				<button id="deleteBtn" class="btn btn-danger btn-lg">删除所选雇员信息</button>
+				<shiro:hasPermission name="emp:delete">
+				<div><button id="deleteBtn" class="btn btn-danger btn-lg">删除所选雇员信息</button></div>
+				</shiro:hasPermission>
 				<div id="splitBarDiv" style="float:right">
 					<jsp:include page="/WEB-INF/pages/plugins/split_plugin_page_bar.jsp"/>
 				</div>
@@ -78,5 +91,6 @@
 		<jsp:include page="/WEB-INF/pages/plugins/back/include_menu_sidebar.jsp" />
 		<div class="control-sidebar-bg"></div>
 	</div>
+	<jsp:include page="/WEB-INF/pages/plugins/back/info/emp_info_modal.jsp" />
 	<jsp:include page="/WEB-INF/pages/plugins/back/include_javascript_foot.jsp" />
 <jsp:include page="/WEB-INF/pages/plugins/back/back_footer.jsp"/>

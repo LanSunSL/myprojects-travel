@@ -7,7 +7,7 @@
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<div class="form-group" id="didDiv">
-					<strong><span class="glyphicon glyphicon-eye-open"></span>&nbsp;查看部门领导信息</strong></h3>
+					<strong><span class="glyphicon glyphicon-eye-open"></span>&nbsp;查看雇员详细信息</strong></h3>
 				</div>
 			</div>
 			<div class="modal-body">
