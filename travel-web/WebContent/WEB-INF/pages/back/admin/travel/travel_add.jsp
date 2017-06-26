@@ -23,7 +23,7 @@
 					<strong><span class="glyphicon glyphicon-file"></span>&nbsp;出差申请单</strong>
 				</div>
 				<div class="panel-body">
-					<form class="form-horizontal" action="<%=TRAVEL_ADD_URL%>" id="myform" method="post">
+					<form class="form-horizontal" action="<%=TRAVEL_ADD_URL%>" id="myform" method="post" enctype="multipart/form-data">
 						<fieldset>
 							<!-- 定义输入表单样式，其中id主要用于设置颜色样式 -->
 							<div class="form-group" id="titleDiv">
@@ -43,7 +43,6 @@
 								<div class="col-md-5">
 									<select id="iid" name="iid" class="form-control">
 										<option value="">====== 请选择外出类型 ======</option>
-										<option value="1">测试</option>
 										<c:forEach items="${allItems}" var="item">
 											<option value="${item.iid}">${item.title}</option>
 										</c:forEach>
@@ -61,11 +60,11 @@
 										placeholder="请选择出差开始时间" readonly>
 								</div>
 								<!-- 定义表单错误提示显示元素 -->
-								<div class="col-md-4" id="destinationMsg"></div>
+								<div class="col-md-4" id="sdateMsg"></div>
 							</div>
 							<div class="form-group" id="edateDiv">
 								<!-- 定义表单提示文字 -->
-								<label class="col-md-3 control-label" for="edate">出差开始日期：</label>
+								<label class="col-md-3 control-label" for="edate">出差结束日期：</label>
 								<div class="col-md-5">
 									<!-- 定义表单输入组件 -->
 									<input type="text" id="edate" name="edate" class="form-control"
@@ -74,16 +73,16 @@
 								<!-- 定义表单错误提示显示元素 -->
 								<div class="col-md-4" id="edateMsg"></div>
 							</div>
-							<div class="form-group" id="destinationDiv">
+							<div class="form-group" id="destDiv">
 								<!-- 定义表单提示文字 -->
-								<label class="col-md-3 control-label" for="destination">出差目的地：</label>
+								<label class="col-md-3 control-label" for="dest">出差目的地：</label>
 								<div class="col-md-5">
 									<!-- 定义表单输入组件 -->
-									<input type="text" id="destination" name="destination" class="form-control"
+									<input type="text" id="dest" name="dest" class="form-control"
 										placeholder="请填写本次出差的目的地">
 								</div>
 								<!-- 定义表单错误提示显示元素 -->
-								<div class="col-md-4" id="destinationMsg"></div>
+								<div class="col-md-4" id="destMsg"></div>
 							</div>
 							<!-- 定义输入表单样式，其中id主要用于设置颜色样式 -->
 							<div class="form-group" id="noteDiv">

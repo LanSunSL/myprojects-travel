@@ -1,7 +1,7 @@
 package org.travel.action.back;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -10,18 +10,24 @@ import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.travel.service.back.ITravelServiceBack;
 import org.travel.util.action.abs.AbstractBaseAction;
+import org.travel.vo.Travel;
 
 @Controller
 @RequestMapping("/pages/back/admin/travel/*")
 public class TravelActionBack extends AbstractBaseAction {
 	private static final String FLAG = "出差申请";
+	@Resource
+	private ITravelServiceBack travelServiceBack;
+	
 	@RequestMapping("add_pre")
 	@RequiresUser
 	@RequiresRoles(value = { "travel" }, logical = Logical.OR)
 	@RequiresPermissions(value = { "travel:add" }, logical = Logical.OR)
 	public ModelAndView addPre() {
 		ModelAndView mav = new ModelAndView(super.getUrl("travel.add.page"));
+		mav.addAllObjects(this.travelServiceBack.addPre());
 		return mav;
 	}
 
@@ -29,11 +35,15 @@ public class TravelActionBack extends AbstractBaseAction {
 	@RequiresUser
 	@RequiresRoles(value = { "travel" }, logical = Logical.OR)
 	@RequiresPermissions(value = { "travel:add" }, logical = Logical.OR)
-	public ModelAndView add(HttpServletRequest request) {
+	public ModelAndView add(Travel vo , HttpServletRequest request) {
+		System.out.println("*****************hahahah" + vo.getTitle());
 		ModelAndView mav = new ModelAndView(super.getUrl("back.forward.page"));
-		// super.setUrlAndMsg(request, "travel.add.action", "vo.add.failure",
-		// FLAG);
-		super.setUrlAndMsg(request, "travel.add.action", "vo.add.success", FLAG);
+//		vo.setSeid(super.getEid());
+//		if (this.travelServiceBack.add(vo)) {
+//			super.setUrlAndMsg(request, "travel.add.action", "vo.add.success", FLAG);
+//		} else {
+//			super.setUrlAndMsg(request, "travel.add.action", "vo.add.failure", FLAG);
+//		}
 		return mav;
 	}
 	

@@ -1,8 +1,8 @@
 $(function() {
 	$("#sdate").on("click",WdatePicker) ;
 	$("#edate").on("click",WdatePicker) ;
-	$("#myform").validate({
-		debug : true, // 取消表单的提交操作
+	$("#myform").validate({		
+		debug : true, // 取消表单的提交操作	
 		submitHandler : function(form) {
 			form.submit(); // 提交表单
 		},
@@ -28,7 +28,7 @@ $(function() {
 		errorClass : "text-danger",
 		rules : {
 			"title" : {
-				required : true,
+				required : true
 				//remote : {
 //									url : "check.jsp", // 后台处理程序
 //									type : "post", // 数据发送方式
@@ -49,7 +49,15 @@ $(function() {
 			"iid" : {
 				required : true
 			} ,
-			"destination" : {
+			"sdate" : {
+				required : true,
+				date : true
+			} ,
+			"edate" : {
+				required : true,
+				date : true
+			} ,
+			"dest" : {
 				required : true 
 			},
 			"note" : {

@@ -28,7 +28,7 @@ public class FileUtils {
 	 * 如果要进行文件的上传保存， 那么必须知道文件的存放父目录
 	 * 必须保证传入的保存路径存在
 	 * @param request request请求对象利用此对象获得ServletContext
-	 * @param parentDir 保存的目录，例如：“upload/emp/”；
+	 * @param dir 保存的目录，例如：“upload/emp/”；
 	 * @param fileName 要保存的文件名称
 	 * @return 成功返回true
 	 */

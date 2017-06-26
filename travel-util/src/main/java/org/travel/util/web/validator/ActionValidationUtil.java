@@ -19,7 +19,6 @@ public class ActionValidationUtil {
 	private Map<String,String> errors = new HashMap<String,String>() ;
 	/**
 	 * 必须明确的传递要进行验证的Action信息以及具体的验证规则处理
-	 * @param actionObject Action程序类
 	 * @param request 请求对象
 	 * @param rule 规则
 	 * @param messageSource 资源文件读取
