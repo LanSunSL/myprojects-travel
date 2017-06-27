@@ -2,8 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.travel.dao.ITravelDAO">
-	<insert id="doCreate" parameterType="Travel" >
+	<insert id="doCreate" parameterType="Travel" useGeneratedKeys="true" keyProperty="tid">
 		INSERT INTO travel (seid,iid,title,sdate,edate,dest,audit,note) 
 		VALUES (#{seid},#{iid},#{title},#{sdate},#{edate},#{dest},#{audit},#{note});
 	</insert>
+	<select id="findAllSplit" parameterType="map" resultType="Travel">
+		SELECT tid,seid,iid,title,sdate,edate,dest,audit,note,ecount,total FROM travel 
+		<where>
+			seid=#{seid}
+			<if test="column != null and keyWord != null">
+				AND ${column} LIKE #{keyWord}
+			</if>
+		</where>
+		ORDER BY subdate DESC
+		LIMIT #{start}, #{lineSize}
+	</select>
+	<select id="getAllCount" parameterType="map" resultType="long">
+		SELECT COUNT(*) FROM travel 
+		<where>
+			seid=#{seid}
+			<if test="column != null and keyWord != null">
+				AND ${column} LIKE #{keyWord}
+			</if>
+		</where>
+	</select>
 </mapper>

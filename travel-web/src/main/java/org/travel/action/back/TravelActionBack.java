@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.travel.service.back.ITravelServiceBack;
 import org.travel.util.action.abs.AbstractBaseAction;
+import org.travel.util.split.ActionSplitPageUtil;
 import org.travel.vo.Travel;
 
 @Controller
@@ -36,14 +37,13 @@ public class TravelActionBack extends AbstractBaseAction {
 	@RequiresRoles(value = { "travel" }, logical = Logical.OR)
 	@RequiresPermissions(value = { "travel:add" }, logical = Logical.OR)
 	public ModelAndView add(Travel vo , HttpServletRequest request) {
-		System.out.println("*****************hahahah" + vo.getTitle());
 		ModelAndView mav = new ModelAndView(super.getUrl("back.forward.page"));
-//		vo.setSeid(super.getEid());
-//		if (this.travelServiceBack.add(vo)) {
-//			super.setUrlAndMsg(request, "travel.add.action", "vo.add.success", FLAG);
-//		} else {
-//			super.setUrlAndMsg(request, "travel.add.action", "vo.add.failure", FLAG);
-//		}
+		vo.setSeid(super.getEid());
+		if (this.travelServiceBack.add(vo)) {
+			super.setUrlAndMsg(request, "travel.add.action", "vo.add.success", FLAG);
+		} else {
+			super.setUrlAndMsg(request, "travel.add.action", "vo.add.failure", FLAG);
+		}
 		return mav;
 	}
 	
@@ -62,6 +62,8 @@ public class TravelActionBack extends AbstractBaseAction {
 	@RequiresPermissions(value = { "travel:self" }, logical = Logical.OR)
 	public ModelAndView listSelf(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(super.getUrl("travel.self.page"));
+		ActionSplitPageUtil aspu = new ActionSplitPageUtil(request, "申请标题:title", super.getMsg("travel.self.action"));
+		mav.addAllObjects(this.travelServiceBack.listSelf(super.getEid(), aspu.getCurrentPage(), aspu.getLineSize(), aspu.getColumn(), aspu.getKeyWord()));
 		return mav;
 	}
 	

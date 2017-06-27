@@ -35,4 +35,14 @@ public class TravelServiceBackImpl extends AbstractService implements ITravelSer
 		return false ;
 	}
 
+	@Override
+	public Map<String, Object> listSelf(String seid, long currentPage, int lineSize, String column, String keyWord) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> param = super.handleParam(currentPage, lineSize, column, keyWord);
+		param.put("seid", seid);
+		map.put("allTravels", this.travelDAO.findAllSplit(param));
+		map.put("allRecorders", this.travelDAO.getAllCount(param));
+		return map;
+	}
+
 }
