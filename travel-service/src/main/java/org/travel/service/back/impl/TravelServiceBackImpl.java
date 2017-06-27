@@ -28,11 +28,11 @@ public class TravelServiceBackImpl extends AbstractService implements ITravelSer
 
 	@Override
 	public boolean add(Travel vo) {
-		if (vo.getSdate().before(vo.getEdate())) {  //出差的开始日期应该在结束日期之前
-			vo.setAudit(9);	//audit=9,表示该申请未提交
+		if (vo.getSdate().before(vo.getEdate())) { // 出差的开始日期应该在结束日期之前
+			vo.setAudit(9); // audit=9,表示该申请未提交
 			return this.travelDAO.doCreate(vo);
 		}
-		return false ;
+		return false;
 	}
 
 	@Override
@@ -43,6 +43,25 @@ public class TravelServiceBackImpl extends AbstractService implements ITravelSer
 		map.put("allTravels", this.travelDAO.findAllSplit(param));
 		map.put("allRecorders", this.travelDAO.getAllCount(param));
 		return map;
+	}
+
+	@Override
+	public Map<String, Object> editPre(Long tid) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("allItems", this.itemDAO.findAll());
+		Travel vo = this.travelDAO.findById(tid);
+		if (vo.getAudit() == 9) {
+			map.put("travel", vo);
+		}
+		return map;
+	}
+
+	@Override
+	public boolean edit(Travel vo) {
+		if (vo.getSdate().before(vo.getEdate())) { // 出差的开始日期应该在结束日期之前
+			return this.travelDAO.doUpdate(vo);
+		}
+		return false;
 	}
 
 }

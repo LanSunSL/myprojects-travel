@@ -26,28 +26,20 @@ $(function() {
 		errorClass : "text-danger",
 		rules : {
 			"title" : {
-				required : true,
-				//remote : {
-//									url : "check.jsp", // 后台处理程序
-//									type : "post", // 数据发送方式
-//									dataType : "html", // 接受数据格式
-//									data : { // 要传递的数据
-//										code : function() {
-//											return $("#code").val();
-//										}
-//									},
-//									dataFilter : function(data, type) {
-//										if (data.trim() == "true")
-//											return true;
-//										else
-//											return false;
-//									}
-				//}
+				required : true
 			},
 			"iid" : {
 				required : true
 			} ,
-			"destination" : {
+			"sdate" : {
+				required : true,
+				date : true
+			} ,
+			"edate" : { 
+				required : true,
+				date : true
+			} ,
+			"dest" : {
 				required : true 
 			},
 			"note" : {

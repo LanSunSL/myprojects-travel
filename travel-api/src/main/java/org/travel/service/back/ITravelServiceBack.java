@@ -18,4 +18,12 @@ public interface ITravelServiceBack {
 	@RequiresRoles("travel")
 	@RequiresPermissions("travel:self")
 	public Map<String, Object> listSelf(String seid, long currentPage, int lineSize, String column, String keyWord);
+
+	@RequiresRoles("travel")
+	@RequiresPermissions("travel:edit")
+	public Map<String, Object> editPre(Long tid);
+
+	@RequiresRoles("travel")
+	@RequiresPermissions("travel:edit")
+	public boolean edit(Travel vo);
 }

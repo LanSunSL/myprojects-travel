@@ -26,4 +26,10 @@
 			</if>
 		</where>
 	</select>
+	<select id="findById" parameterType="long" resultType="Travel">
+		SELECT tid,seid,iid,title,sdate,edate,dest,audit,note,ecount,total,subdate,auddate,anote,aeid FROM travel WHERE tid=#{tid}
+	</select>
+	<update id="doUpdate" parameterType="Travel">
+		UPDATE travel SET iid=#{iid},title=#{title},sdate=#{sdate},edate=#{edate},dest=#{dest},note=#{note} WHERE tid=#{tid} AND seid=#{seid}
+	</update>
 </mapper>

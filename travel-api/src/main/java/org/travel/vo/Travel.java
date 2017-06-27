@@ -117,5 +117,13 @@ public class Travel implements Serializable {
 	public void setTotal(Double total) {
 		this.total = total;
 	}
+	@Override
+	public String toString() {
+		return "Travel [tid=" + tid + ", seid=" + seid + ", aeid=" + aeid + ", iid=" + iid + ", title=" + title
+				+ ", sdate=" + sdate + ", edate=" + edate + ", subdate=" + subdate + ", dest=" + dest + ", audit="
+				+ audit + ", note=" + note + ", auddate=" + auddate + ", anote=" + anote + ", ecount=" + ecount
+				+ ", total=" + total + "]";
+	}
+	
 }
 
