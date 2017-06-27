@@ -1,5 +1,6 @@
 package org.travel.service.back.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,9 @@ public class TravelServiceBackImpl extends AbstractService implements ITravelSer
 
 	@Override
 	public boolean add(Travel vo) {
+		if (vo.getSdate().before(new Date())) {  //新增差旅安排的出差日期必须在当前日期之后
+			return false; 
+		}
 		if (vo.getSdate().before(vo.getEdate())) { // 出差的开始日期应该在结束日期之前
 			vo.setAudit(9); // audit=9,表示该申请未提交
 			return this.travelDAO.doCreate(vo);
@@ -58,10 +62,18 @@ public class TravelServiceBackImpl extends AbstractService implements ITravelSer
 
 	@Override
 	public boolean edit(Travel vo) {
+		if (vo.getSdate().before(new Date())) {
+			return false; 
+		}
 		if (vo.getSdate().before(vo.getEdate())) { // 出差的开始日期应该在结束日期之前
 			return this.travelDAO.doUpdate(vo);
 		}
 		return false;
+	}
+
+	@Override
+	public boolean delete(Travel vo) {
+		return this.travelDAO.doRemoveSelf(vo);
 	}
 
 }

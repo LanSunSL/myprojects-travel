@@ -67,7 +67,7 @@
 								<td class="text-center">${travel.ecount}</td>
 								<td class="text-center">￥${travel.total}</td>
 								<td class="text-center">
-								<c:if test="${travel.audit==9}">
+								<c:if test="${travel.audit==9 || travel.audit==2}">
 									<a type="button" class="btn btn-primary btn-xs" href="<%=TRAVEL_SUBMIT_URL%>">
 										<span class="glyphicon glyphicon-cloud-upload"></span>&nbsp;提交申请</a>
 									<a type="button" class="btn btn-warning btn-xs" href="<%=TRAVEL_USER_URL%>">
@@ -76,7 +76,7 @@
 										<span class="glyphicon glyphicon-credit-card"></span>&nbsp;出差费用</a>
 									<a type="button" class="btn btn-info btn-xs" href="<%=TRAVEL_EDIT_URL%>?tid=${travel.tid}">
 										<span class="glyphicon glyphicon-edit"></span>&nbsp;编辑</a>
-									<a type="button" class="btn btn-danger btn-xs" href="<%=TRAVEL_DELETE_URL%>">
+									<a type="button" class="btn btn-danger btn-xs" href="<%=TRAVEL_DELETE_URL%>?tid=${travel.tid}">
 										<span class="glyphicon glyphicon-remove"></span>&nbsp;删除</a>
 								</c:if>
 								</td>

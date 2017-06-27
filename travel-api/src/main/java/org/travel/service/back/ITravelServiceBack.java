@@ -26,4 +26,8 @@ public interface ITravelServiceBack {
 	@RequiresRoles("travel")
 	@RequiresPermissions("travel:edit")
 	public boolean edit(Travel vo);
+	
+	@RequiresRoles("travel")
+	@RequiresPermissions("travel:delete")
+	public boolean delete(Travel vo);
 }
